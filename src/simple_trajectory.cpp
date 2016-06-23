@@ -22,30 +22,29 @@ int main(int argc, char **argv)
   std::vector<Eigen::Affine3d, Eigen::aligned_allocator<Eigen::Affine3d> > way_points_vector;
   Eigen::Affine3d pose;
 
-  // Square belonging to XY plane
   pose.linear() <<
       1, 0, 0,
-      0, 1, 0,
-      0, 0, 1;
-  pose.translation() << 0.5, 0.5, 0.5;
+      0, -1, 0,
+      0, 0, -1;
+  pose.translation() << 0.8, -0.1, -0.1;
   way_points_vector.push_back(pose);
   point_color_viz.push_back(1);
-  pose.translation() << 1.0, 0.5, 0.5;
+  pose.translation() << 1.0, -0.1, -0.1;
   way_points_vector.push_back(pose);
   point_color_viz.push_back(1);
-  pose.translation() << 1.5, 0.5, 0.5;
+  pose.translation() << 1.2, -0.1, -0.1;
   way_points_vector.push_back(pose);
   point_color_viz.push_back(1);
-  pose.translation() << 1.5, 0.5, 1.0;
+  pose.translation() << 1.2, -0.1, 0.1;
   way_points_vector.push_back(pose);
   point_color_viz.push_back(0);
-  pose.translation() << 1.0, 0.5, 1.0;
+  pose.translation() << 1.0, -0.1, 0.1;
   way_points_vector.push_back(pose);
   point_color_viz.push_back(0);
-  pose.translation() << 0.5, 0.5, 1.0;
+  pose.translation() << 0.8, -0.1, 0.1;
   way_points_vector.push_back(pose);
   point_color_viz.push_back(0);
-  pose.translation() << 0.5, 0.5, 0.5;
+  pose.translation() << 0.8, -0.1, -0.1;
   way_points_vector.push_back(pose);
   point_color_viz.push_back(0);
 
@@ -73,7 +72,7 @@ int main(int argc, char **argv)
     srv_post_processor_.request.RobotPoses.push_back(way_points_msg[i]);
     srv_post_processor_.request.PointColorViz.push_back(point_color_viz[i]);
   }
-
+  ROS_ERROR_STREAM("coucou");
   post_processor_service_.call(srv_post_processor_);
   ROS_ERROR_STREAM(srv_post_processor_.response.ReturnMessage);
 
