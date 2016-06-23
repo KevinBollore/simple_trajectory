@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="simple_trajectory" pkg="simple_trajectory" type="simple_trajectory" required="true" />
+  <node name="post_processor" pkg="fanuc_grinding_post_processor" type="fanuc_grinding_post_processor" output="screen" required="true" />
+</launch>
+
