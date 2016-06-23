@@ -61,9 +61,18 @@ int main(int argc, char **argv)
   //Setup client
   post_processor_service_ = post_processor_node_.serviceClient<fanuc_grinding_post_processor::PostProcessorService>("post_processor_service");
 
-  srv_post_processor_.request.IpAdress = "192.168.1.1";
+  // Check if we are connect to the service
+  if(!post_processor_service_.waitForExistence(ros::Duration(2)))
+  {
+    ROS_ERROR_STREAM("Cannot connect to service... Abort");
+    return 0;
+  }
+
+  srv_post_processor_.request.IpAdress = "192.168.100.239";
   srv_post_processor_.request.ProgramName = "PP_FANUC_GRINDING_TEST.ls";
-  srv_post_processor_.request.Upload = false;
+  srv_post_processor_.request.MachiningSpeed = 2;
+  srv_post_processor_.request.ExtricationSpeed = 5;
+  srv_post_processor_.request.Upload = true;
   srv_post_processor_.request.ProgramLocation = "/home/dell/";
   srv_post_processor_.request.Comment = "Test fanuc grinding PP";
 
@@ -72,7 +81,6 @@ int main(int argc, char **argv)
     srv_post_processor_.request.RobotPoses.push_back(way_points_msg[i]);
     srv_post_processor_.request.PointColorViz.push_back(point_color_viz[i]);
   }
-  ROS_ERROR_STREAM("coucou");
   post_processor_service_.call(srv_post_processor_);
   ROS_ERROR_STREAM(srv_post_processor_.response.ReturnMessage);
 
