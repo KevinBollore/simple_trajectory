@@ -16,13 +16,6 @@ int main(int argc, char **argv)
   ros::AsyncSpinner spinner(1);
   spinner.start();
 
-  ROS_ERROR_STREAM("COUCOU");
-
-  /*move_group_interface::MoveGroup group("manipulator");
-  group.setPoseReferenceFrame("/base"); // Otherwise "base_link" is the reference!
-  group.setPlannerId("RRTConnectkConfigDefault");
-  group.setPlanningTime(1);*/
-
   std::vector<bool> point_color_viz; // 1 machining path, 0 extrication
 
   // Create a trajectory (vector of Eigen poses)
@@ -80,17 +73,9 @@ int main(int argc, char **argv)
     srv_post_processor_.request.RobotPoses.push_back(way_points_msg[i]);
     srv_post_processor_.request.PointColorViz.push_back(point_color_viz[i]);
   }
-  ROS_ERROR_STREAM("COUCOU");
+
   post_processor_service_.call(srv_post_processor_);
   ROS_ERROR_STREAM(srv_post_processor_.response.ReturnMessage);
-  // Execute trajectory
-  /*ROS_WARN("Start ExecuteKnownTrajectory trajectory");
-  moveit_msgs::ExecuteKnownTrajectory srv;
-  srv.request.wait_for_execution = true;
-  ros::ServiceClient executeKnownTrajectoryServiceClient = node.serviceClient<moveit_msgs::ExecuteKnownTrajectory>(
-      "/execute_kinematic_path");
-  group.computeCartesianPath(way_points_msg, 0.05, 15, srv.request.trajectory); // Solve problem
-  executeKnownTrajectoryServiceClient.call(srv); // Execute*/
 
   return 0;
 }
